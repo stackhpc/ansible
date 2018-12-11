@@ -225,6 +225,8 @@ openstack_quotas:
 
 '''
 
+from keystoneauth1 import exceptions
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.openstack import openstack_full_argument_spec, openstack_module_kwargs, openstack_cloud_from_module
 
@@ -249,12 +251,12 @@ def _get_quotas(sdk, module, cloud, project):
     quota = {}
     try:
         quota['volume'] = _get_volume_quotas(cloud, project)
-    except sdk.exceptions.NotFoundException:
+    except exceptions.EndpointNotFound:
         module.warn("No public endpoint for volumev2 service was found. Ignoring volume quotas.")
 
     try:
         quota['network'] = _get_network_quotas(cloud, project)
-    except sdk.exceptions.NotFoundException:
+    except exceptions.EndpointNotFound:
         module.warn("No public endpoint for network service was found. Ignoring network quotas.")
 
     quota['compute'] = _get_compute_quotas(cloud, project)
