@@ -373,7 +373,6 @@ class StrategyModule(StrategyBase):
                         if s.run_state not in dont_fail_states or \
                            s.run_state == IteratingStates.RESCUE and s.fail_state & FailedStates.RESCUE != 0:
                             self._tqm._failed_hosts[host.name] = True
-                            result |= self._tqm.RUN_FAILED_BREAK_PLAY
                 display.debug("done checking for any_errors_fatal")
 
                 display.debug("checking for max_fail_percentage")
